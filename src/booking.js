@@ -9,7 +9,7 @@ let bookingGB = [
     date: "23/12/2021",
   },
   {
-    id: 1,
+    id: 2,
     breweryId: 10486,
     numberPeople: 2,
     date: "23/12/2021",
@@ -30,13 +30,14 @@ bookingRouter.get("/", (req, res) => {
 
 bookingRouter.patch("/:id", (req, res) => {
   const bookingId = Number(req.params.id);
-  let findObj = bookingGB.find((booking) => booking.id === bookingId);
-  if (findObj === undefined) {
+  let findObj = bookingGB.findIndex((booking) => booking.id === bookingId);
+  if (findObj < 0) {
     res.status(400).json("bad request");
   } else {
-    bookingGB = bookingGB.map((booking) => {
-      return booking.id === bookingId ? { ...booking, ...req.body } : booking;
-    });
+    // bookingGB = bookingGB.map((booking) => {
+    //   return booking.id === bookingId ? { ...booking, ...req.body } : booking;
+    // });
+    bookingGB[findObj] = { ...bookingGB[findObj], ...req.body };
     res.json({ ...findObj, ...req.body });
   }
 });
